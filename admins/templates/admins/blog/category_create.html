@@ -47,6 +47,9 @@
                 <div class="portlet-body">
                     <form role="form" action="" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
+                        {% if form.errors %}
+                        <center><span style="color: red;">لطفا اشکالات زیر را برطرف کنید.</span></center>
+                        {% endif %}
                         <div class="form-body">
                             <div class="form-group row">
                                 <label class="col-sm-3">عنوان دسته بندی</label>

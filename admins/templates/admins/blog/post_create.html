@@ -48,6 +48,9 @@
                     <h2 style="color: red;">این نسخه از QURNO در حالت دمو قرار دارد، کلیه ی فیلد های درخواست شده را پر کنید.</h2>
                     <form role="form" action="" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
+                        {% if form.errors %}
+                        <center><span style="color: red;">لطفا اشکالات زیر را برطرف کنید.</span></center>
+                        {% endif %}
                         <div class="form-body">
                             <div class="form-group relative">
                                 <input type="file" name="banner" class="form-control"> 
