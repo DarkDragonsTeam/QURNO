@@ -21,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ["SECRET_KEY"]
+SECRET_KEY = os.getenv("SECRET_KEY", "SECRET KEY is not found.")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ["DEBUG"]
+DEBUG = os.getenv("DEBUG", "DEBUG status is not found.")
 
-ALLOWED_HOSTS = ["127.0.0.1", "0.0.0.0", "localhost"]
+ALLOWED_HOSTS = ["*"]
 
 # Kernel settings
 
@@ -98,13 +98,14 @@ DATABASES = {
     # you can also use the Docker edition.
     # You must execute these values under environmental variables, the procedure for which is Docker or Classic in the
     # README.md file.
+    ### COMMENTED FOR LIARA SERVICE DEPLOYMENT ###
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ["DATABASE_NAME"],
-        'USER': os.environ["DATABASE_ROLE"],
-        'PASSWORD': os.environ["DATABASE_ROLE_PASSWORD"],
-        'HOST': 'db',
-        'PORT': '5432'
+        'NAME': os.getenv("DATABASE_NAME", "PostgreSQL DATABASE NAME not found."),
+        'USER': os.getenv("DATABASE_ROLE", "PostgreSQL DATABASE ROLE not found or not authenticated."),
+        'PASSWORD': os.getenv("DATABASE_ROLE_PASSWORD", "PostgreSQL ROLE PASSWORD is wrong."),
+        'HOST': os.getenv("DATABASE_HOST", "PostgreSQL DATABASE HOST is not found."),
+        'PORT': os.getenv("DATABASE_PORT", "PostgreSQL DATABASE PORT is wrong.")
     }
 
     # It is a lightweight database with no hassles to develop and view projects quickly.
