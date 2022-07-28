@@ -1,0 +1,24 @@
+# Created by DarkDragons / Noovidap
+
+### Django ###
+venv/
+/modules
+/modules/
+/modules/*
+
+
+### Extra Cover Files ###
+*.env.sample
+db.env.sample
+web.env.sample
+
+
+### Security ###
+src!
+src/
+
+### IDE's ###
+.idea/
+.vs_code/
+.vscode/
+.vs-code/

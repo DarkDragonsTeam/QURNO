@@ -1,0 +1,10 @@
+<div class="mt-4 card-meta">
+    <p class="h4 mb-3">پست ها رو میتونی با دسته بندی ها هم پیدا کنی</p>
+    <ul class="card-meta-tag list-inline">
+      {% for category in categories %}
+        <li class="list-inline-item me-1 mb-2">
+          <a class="small" href="{% url 'blog:category_detail' category.slug %}">{{ category.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+</div>

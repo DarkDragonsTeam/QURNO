@@ -1,0 +1,30 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block title %}
+متاسفانه سرور به مشکل خورد:(
+{% endblock %}
+
+{% block tags %}
+{% include "blog/includes/_tag_list.html" %}
+{% endblock %}
+
+{% block categories %}
+{% include "blog/includes/_category_list.html" %}
+{% endblock %}
+
+{% block content %}
+<section class="section-sm pb-0">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="text-center">
+            <h1 class="page-not-found-title">500</h1>
+            <p class="mb-4">معذرت میخوایم! نتوستیم درخواستت رو پردازش کنیم</p>
+            <button onclick="window.history.go(-1);" class="btn btn-primary">برگرد به همون جایی که بودی لعنتی😒</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

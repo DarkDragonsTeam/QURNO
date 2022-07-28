@@ -1,0 +1,233 @@
+{% extends "_base_admins.html" %}
+{% load static %}
+
+{% block title %}
+    
+    {% if author_username %}
+        پست های مربوط به نویسنده {{ author.name }}
+        {% else %}
+        لیست پست ها
+    {% endif %}
+
+{% endblock %}
+
+{% block content %}
+<!-- BEGIN PAGE CONTENT -->
+<div id="page-content">
+    <div class="row">                    
+        <!-- BEGIN BREADCRUMB -->
+        <div class="col-md-12">
+            <div class="breadcrumb-box border shadow"> 
+                <ul class="breadcrumb">
+                    <li><a href="{% url 'admins:admins' %}">پیشخوان</a></li>
+                    <li><a href="{% url 'admins:post_list' %}">لیست پست ها</a></li>                                
+                    
+                    {% if author_username %}
+                        
+                        {% if request.user.username == author_username %}
+                        <li class="active">لیست پست های شما</li>
+                            {% else %}
+                            <li class="active">لیست پست های {% if author.first_name and author.last_name %}{{ author.first_name }} {{ author.last_name }}{% else %}{{ author.username }}{% endif %}</li>
+                        {% endif %}
+
+                    {% endif %}
+                                                  
+                </ul>
+                <div class="breadcrumb-left">
+                    {{ today }} - 
+                    {% include "admins/includes/_get_weekday.html" %}
+                    <i class="icon-calendar"></i>
+                </div><!-- /.breadcrumb-left -->
+            </div><!-- /.breadcrumb-box -->
+        </div><!-- /.col-md-12 -->
+        <!-- END BREADCRUMB -->                    
+        
+        <div class="col-lg-12">
+            <div class="portlet box border shadow">
+                <div class="portlet-heading">
+                    <div class="portlet-title">
+                        <h3 class="title">                                        
+                            <i class="icon-basket-loaded fa-flip-horizontal"></i>
+                            
+                            {% if author_username %}
+                                
+                                {% if author_username == request.user.username %}
+                                    پست های شما
+                                    
+                                    {% elif author.first_name and author.last_name %}
+                                    لیست پست های {{ author.first_name }} {{ author.last_name }}
+                                    
+                                    {% else %}
+                                    لیست پست های {{ author.username }}
+                                {% endif %}
+
+                                {% else %}
+                                    لیست پست ها
+                            {% endif %}
+                                
+                        </h3>
+                    </div><!-- /.portlet-title -->
+                    <div class="buttons-box">
+                        <a class="btn btn-sm btn-default btn-round btn-code" rel="tooltip" title="کدها" href="#">
+                            <i class="fa fa-code"></i>
+                        </a>
+                        <a class="btn btn-sm btn-default btn-round btn-fullscreen" rel="tooltip" title="تمام صفحه" href="#">
+                            <i class="icon-size-fullscreen"></i>
+                        </a>
+                        <a class="btn btn-sm btn-default btn-round btn-collapse" rel="tooltip" title="کوچک کردن" href="#">
+                            <i class="icon-arrow-up"></i>
+                        </a>
+                    </div><!-- /.buttons-box -->
+                </div><!-- /.portlet-heading -->
+                <div class="portlet-body">
+                    <div class="row">
+                        <div class="col-md-4 col-12 m-b-20">
+                            <a class="btn btn-success btn-round" href="{% url 'admins:post_create' %}">
+                                <i class="icon-plus"></i>
+                                افزودن
+                            </a>
+                            
+                            {% if not author_username %}
+                            <a class="btn btn-info btn-round" href="{% url 'admins:post_list' request.user.username %}">
+                                <i class="icon-layers"></i>
+                                پست های خودم
+                            </a>
+                            {% endif %}
+                            
+                        </div><!-- /.col-md-4 -->
+                        <div class="col-md-4 col-12 m-b-20">
+                            <form role="form" action="{% url 'admins:post_search' %}" method="get">
+                                <div class="input-group round">
+                                    <input name="query" type="text" class="form-control" placeholder="جستجو..."> 
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">
+                                            <i class="icon-magnifier"></i> 
+                                        <div class="paper-ripple"></button>
+                                    </span>
+                                </div><!-- ./input-group -->
+                            </form>
+                        </div><!-- /.col-md-4 -->
+                    </div><!-- /.row -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th><i class="icon-energy"></i></th>
+                                    <th>نویسنده</th>
+                                    <th>عنوان پست</th>
+                                    <th>تاریخ انتشار پست</th>
+                                    <th>بازدید ها</th>
+                                    <th>وضعیت انتشار</th>
+                                    <th>مدیریت</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for post in posts %}
+                                <tr>
+                                    <td>{{ forloop.counter }} => {{ post.id }}</td>
+                                    <td>
+                                        <a href="{% url 'admins:post_list' post.author.username %}">
+                                            <img class="img-person img-circle" src="{{ post.author.avatar.url }}">
+                                            <span>
+                                                
+                                                {% if post.author.first_name and post.author.last_name %}
+                                                    {{ post.author.first_name }} {{ post.author.last_name }}
+                                                    {% else %}
+                                                    {{ post.author.username }}
+                                                {% endif %}
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {{ post.title }}
+                                    </td>
+                                    <td>{{ post.get_pub_datetime_jalali_date }}</td>
+                                    <td>{{ post.views }}</td>
+                                    <td>
+                                        
+                                        {% if post.status == "1" %}
+                                            <label class="label-primary round">منتشر شده</label>
+                                            {% else %}
+                                            <label class="label-secondary round">پیش نویس</label>
+                                        {% endif %}
+                                            
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'admins:post_detail' post.id %}" class="btn btn-success btn-round">
+                                            <i class="icon-eyeglass"></i>
+                                            مشاهده
+                                        </a>
+                                        <a href="{% url 'admins:post_update' post.id %}" class="btn btn-info btn-round">
+                                            <i class="icon-note"></i>
+                                            ویرایش
+                                        </a>
+                                        <a href="{% url 'admins:post_delete' post.id %}" class="btn btn-danger btn-round">
+                                            <i class="icon-trash"></i>
+                                            حذف
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div><!-- /.table-responsive -->
+                    
+                    {% if not query %}
+                    <div class="text-center">
+                        <ul class="pagination round">
+                            
+                            {% if page_obj.has_previous %}
+                            <li>
+                                <a href="?page=1">
+                                    <i class="icon-control-end"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="?page={{ page_obj.previous_page_number }}">
+                                    <i class="icon-arrow-right"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+                                
+
+                            {% for page_num in page_obj.adjusted_elided_pages %}
+                                
+                                {% if page_num == page_obj.paginator.ELLIPSIS %}
+                                <li>
+                                    <span class="active">...</span>
+                                </li>
+                                    
+                                    {% else %}
+                                    <li>
+                                        <span><a href="?page={{ page_num }}">{{ page_num }}</a></span>
+                                    </li>
+                                {% endif %}
+                                
+                            {% endfor %}
+
+                            
+                            {% if page_obj.has_next %}
+                            <li>
+                                <a href="?page={{ page_obj.next_page_number }}">
+                                    <i class="icon-arrow-left"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="?page={{ page_obj.paginator.num_pages }}">
+                                    <i class="icon-control-start"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+
+                        </ul>
+                    </div><!-- /.text-center -->
+                    {% endif %}
+                        
+                </div><!-- /.portlet-body -->
+            </div><!-- /.portlet -->
+        </div><!-- /.col-lg-12 -->
+        
+    </div><!-- /.row -->
+</div><!-- /#page-content -->
+<!-- END PAGE CONTENT -->
+{% endblock content %}

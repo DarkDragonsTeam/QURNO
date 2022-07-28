@@ -1,0 +1,205 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block title %}
+{{ post.title }} {{ post.category.views }}
+{% endblock %}
+
+{% block tags %}
+{% include "blog/includes/_tag_list.html" %}
+{% endblock %}
+
+{% block categories %}
+{% include "blog/includes/_category_list.html" %}
+{% endblock %}
+
+{% block content %}
+<section class="section-sm pb-0">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="mb-5">
+                    <h3 class="h1 mb-4 post-title">{{ post.title }}</h3>
+
+                    <ul class="card-meta list-inline mb-2">
+                        <li class="list-inline-item mt-2">
+                            <a href="{% url 'blog:author_post_list' post.author.username %}" class="card-meta-author" title=" خواندن پست نوشته شده توسط -{% if post.author.first_name and post.author.last_name %} {{ post.author.first_name }} {{ post.author.last_name }} {% else %} {{ post.author.username }} {% endif %} ">
+                                <img class="w-auto" src="{{ post.author.avatar.url }}" alt="{% if post.author.first_name and post.author.last_name %} {{ post.author.first_name }} {{ post.author.last_name }} {% else %} {{ post.author.username }} {% endif %}" width="26" height="26"> توسط <span>
+                                    {% if post.author.first_name and post.author.last_name %}
+                                    {{ post.author.first_name }} {{ post.author.last_name }}
+                                    {% else %}
+                                    {{ post.author.username }}
+                                    {% endif %}
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item mt-2">—</li>
+                        <li class="list-inline-item mt-2">
+                            <i class="ti ti-clock"></i>
+                            <span>{{ post.read_time }} دقیقه خوانش</span>
+                        </li>
+                        <li class="list-inline-item mt-2">—</li>
+                        <li class="list-inline-item mt-2">
+                            <i class="ti ti-calendar-event"></i>
+                            <span>{{ post.get_pub_datetime_jalali_date }}</span>
+                        </li>
+                        <li class="list-inline-item mt-2">
+                            <i class="ti ti-eye"></i>
+                            <span>بازدید ها {{ post.views }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="mb-5 text-center">
+                    <img class="w-100 h-auto rounded" src="{{ post.banner.url }}" alt="{{ post.title }}" width="970"
+                        height="500">
+                </div>
+            </div>
+            <div class="col-lg-2 post-share-block order-1 order-lg-0 mt-5 mt-lg-0">
+                <div class="position-sticky" style="top:150px">
+                    <span class="d-inline-block mb-3 small"> اشتراک گذاری </span>
+                    <ul class="social-share icon-box">
+                        <li class="d-inline-block d-lg-block me-2 mb-2" onclick="return tbs_click()"><i
+                                class="ti ti-brand-twitter"></i></li>
+                        <li class="d-inline-block d-lg-block me-2 mb-2" onclick="return fbs_click()"><i
+                                class="ti ti-brand-facebook"></i></li>
+                        <li class="d-inline-block d-lg-block me-2 mb-2" onclick="return ins_click()"><i
+                                class="ti ti-brand-linkedin"></i></li>
+                        <li class="d-inline-block d-lg-block me-2 mb-2" onclick="return red_click()"><i
+                                class="ti ti-brand-reddit"></i></li>
+                        <li class="d-inline-block d-lg-block me-2 mb-2" onclick="return pin_click()"><i
+                                class="ti ti-brand-pinterest"></i></li>
+                    </ul>
+                </div>
+                <script type="text/javascript">
+                    var pageLink = window.location.href;
+                    var pageTitle = String(document.title).replace(/\&/g, '%26');
+                    function tbs_click() { pageLink = 'https://twitter.com/intent/tweet?text=${pageTitle}&amp;url=${pageLink}'; socialWindow(pageLink, 570, 570); }
+                    function fbs_click() { pageLink = 'https://www.facebook.com/sharer.php?u=${pageLink}&amp;quote=${pageTitle}'; socialWindow(pageLink, 570, 570); }
+                    function ins_click() { pageLink = 'https://www.linkedin.com/sharing/share-offsite/?url=${pageLink}'; socialWindow(pageLink, 570, 570); }
+                    function red_click() { pageLink = 'https://www.reddit.com/submit?url=${pageLink}'; socialWindow(pageLink, 570, 570); }
+                    function pin_click() { pageLink = 'https://www.pinterest.com/pin/create/button/?&amp;text=${pageTitle}&amp;url=${pageLink}&amp;description=${pageTitle}'; socialWindow(pageLink, 570, 570); }
+                    function socialWindow(pageLink, width, height) { var left = (screen.width - width) / 2; var top = (screen.height - height) / 2; var params = "menubar=no,toolbar=no,status=no,width=" + width + ",height=" + height + ",top=" + top + ",left=" + left; window.open(pageLink, "", params); }
+                </script>
+            </div>
+            <div class="col-lg-8 post-content-block order-0 order-lg-2">
+                <div class="content">
+                    {{ post.content|safe }}
+                </div>
+
+                <ul class="post-meta-tag list-unstyled list-inline mt-5">
+                    <li class="list-inline-item"> برچسب ها: </li>
+                    {% for tag in post.tags.filter %}
+                    <li class="list-inline-item"><a class="bg-white" href="{% url 'blog:post_list' tag.slug %}">{{ tag.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="single-post-author">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="d-block d-md-flex">
+                        <a href="javascript:void(0);">
+                            <img class="rounded mr-4" src="{{ post.author.avatar.url }}" alt="
+                    {% if post.author.first_name and post.author.last_name %} {{ post.author.first_name }} {{ post.author.last_name }} {% else %} {{ post.author.username }} {% endif %} " width="155" height="155">
+                        </a>
+                        <div class="ms-0 ms-md-4 ps-0 ps-md-3 mt-4 mt-md-0" style="margin-right: 25px;">
+                            <h3 class="h4 mb-3"><a href="javascript:void(0);" class="text-dark">
+                                    {% if post.author.first_name and post.author.last_name %}
+                                    {{ post.author.first_name }} {{ post.author.last_name }}
+                                    {% else %}
+                                    {{ post.author.username }}
+                                    {% endif %}
+                                </a></h3>
+                            <p>
+                                {% if post.author.bio %}
+                                {{ post.author.bio }}
+                                {% else %}
+                                متاسفانه این نویسنده بیوگرافی ندارد.
+                                {% endif %}
+                            </p>
+                            <div class="content"><a href="{% url 'blog:author_post_list' post.author.username %}">تمام پست های "{% if post.author.first_name and post.author.last_name %}{{ post.author.first_name }} {{ post.author.last_name }} {% else %}{{ post.author.username }}{% endif %}" را ببینید <i
+                                        class="ti ti-arrow-up-right"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="single-post-similer">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="text-center">
+                        <h2 class="section-title">
+                            <span>پست های مرتبط</span>
+                        </h2>
+                    </div>
+                    <div class="row gy-5 gx-4 g-xl-5">
+
+
+                        {% for post in similar_posts %}
+                        <div class="col-lg-6">
+                            <article class="card post-card h-100 border-0 bg-transparent">
+                                <div class="card-body">
+                                    <a class="d-block" href="{% url 'blog:post_detail' post.slug%}"
+                                        title="{{ post.title }}">
+                                        <div class="post-image position-relative">
+                                            <img class="w-100 h-auto rounded"
+                                                src="{{ post.banner.url }}"
+                                                alt="{{ post.title }}" width="970"
+                                                height="500">
+                                        </div>
+                                    </a>
+                                    <ul class="card-meta list-inline mb-3">
+                                        <li class="list-inline-item mt-2">
+                                            <i class="ti ti-calendar-event"></i>
+                                            <span>{{ post.get_pub_datetime_jalali_date }}</span>
+                                        </li>
+                                        <li class="list-inline-item mt-2">—</li>
+                                        <li class="list-inline-item mt-2">
+                                            <i class="ti ti-clock"></i>
+                                            <span>{{ post.read_time }} دقیقه خوانش</span>
+                                        </li>
+                                    </ul>
+                                    <a class="d-block" href="javascript:void(0);"
+                                        title="{{ post.title }}">
+                                        <h3 class="mb-3 post-title">
+                                            {{ post.title }}
+                                        </h3>
+                                    </a>
+                                    <p>{{ post.message }}</p>
+                                </div>
+                                <div class="card-footer border-top-0 bg-transparent p-0">
+                                    <ul class="card-meta list-inline">
+                                        <li class="list-inline-item mt-2">
+                                            <a href="{% url 'blog:post_list' post.author.username %}" class="card-meta-author"
+                                                title="{% if post.author.first_name and post.author.last_name %}{{ post.author.first_name }} {{ post.author.last_name }} {% else %}{{ post.author.username }}{% endif %}خواندن پست نوشته شده توسط - ">
+                                                <img class="w-auto"
+                                                    src="{{ post.author.avatar.url }}"
+                                                    alt="{% if post.author.first_name and post.author.last_name %}{{ post.author.first_name }} {{ post.author.last_name }} {% else %} {{ post.author.username }}{% endif %}" width="26" height="26"> توسط <span>{% if post.author.first_name and post.author.last_name %}{{ post.author.first_name }} {{ post.author.last_name }} {% else %}{{ post.author.username }}{% endif %}</span>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item mt-2">•</li>
+                                        <li class="list-inline-item mt-2">
+                                            <ul class="card-meta-tag list-inline">
+                                                {% for tag in post.tags.filter %}
+                                                <li class="list-inline-item small"><a href="{% url 'blog:post_list' tag.slug %}">{{ tag.name }}</a></li>
+                                                {% endfor %}
+
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </article>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

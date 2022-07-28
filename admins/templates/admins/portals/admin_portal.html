@@ -1,0 +1,245 @@
+{% extends "_base_admins.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+به مدیریت خوش آمدید
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+                <div class="row">
+                    <!-- BEGIN BREADCRUMB -->
+                    <div class="col-md-12">
+                        <div class="breadcrumb-box border shadow">
+                            <ul class="breadcrumb">
+                                <li><a href="{% url 'admins:admins' %}">پیشخوان</a></li>
+                            </ul>
+                            <div class="breadcrumb-left">
+                                {{ today }} -
+                                {% include "admins/includes/_get_weekday.html" %}
+                                <i class="icon-calendar"></i>
+                            </div><!-- /.breadcrumb-left -->
+                        </div><!-- /.breadcrumb-box -->
+                    </div><!-- /.col-md-12 -->
+                    <!-- END BREADCRUMB -->
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-lg-3 col-6">
+                                <div class="stat-box bg-cyan shadow">
+                                    <a href="javascript:void(0);">
+                                        <div class="stat">
+                                            <div class="counter-down" data-value="{{ total_users }}"></div>
+                                            <div class="h3">کاربر</div>
+                                        </div><!-- /.stat -->
+                                        <div class="visual">
+                                            <i class="icon-people"></i>
+                                        </div><!-- /.visual -->
+                                    </a>
+                                </div><!-- /.stat-box -->
+                            </div><!-- /.col-lg-3 -->
+                            <div class="col-lg-3 col-6">
+                                <div class="stat-box bg-blue shadow">
+                                    <a href="javascript:void(0);">
+                                        <div class="stat">
+                                            <div class="counter-down" data-value="{{ total_actives_posts }}"></div>
+                                            <div class="h3">پست های آماده</div>
+                                        </div><!-- /.stat -->
+                                        <div class="visual">
+                                            <i class="fa fa-bomb"></i>
+                                        </div><!-- /.visual -->
+                                    </a>
+                                </div><!-- /.stat-box -->
+                            </div><!-- /.col-lg-3 -->
+                            <div class="col-lg-3 col-6">
+                                <div class="stat-box bg-orange shadow">
+                                    <a href="javascript:void(0);">
+                                        <div class="stat">
+                                            <div class="counter-down" data-value="{{ total_posts }}"></div>
+                                            <div class="h3">تعداد کل پست های ثبت شده</div>
+                                        </div><!-- /.stat -->
+                                        <div class="visual">
+                                            <i class="icon-list"></i>
+                                        </div><!-- /.visual -->
+                                    </a>
+                                </div><!-- /.stat-box -->
+                            </div><!-- /.col-lg-3 -->
+                            <div class="col-lg-3 col-6">
+                                <div class="stat-box bg-red shadow">
+                                    <a href="javascript:void(0);">
+                                        <div class="stat">
+                                            <div class="counter-down" data-value="{{ total_comments }}"></div>
+                                            <div class="h3">تعداد کل نظرات</div>
+                                        </div><!-- /.stat -->
+                                        <div class="visual">
+                                            <i class="icon-bubbles"></i>
+                                        </div><!-- /.visual -->
+                                    </a>
+                                </div><!-- /.stat-box -->
+                            </div><!-- /.col-lg-3 -->
+                        </div><!-- /.row -->
+
+
+                        <div class="row">
+                            <div class="col-md-6 col-xs-12">
+                                <div class="portlet box border shadow min-height-600">
+                                    <div class="portlet-heading">
+                                        <div class="portlet-title">
+                                            <h3 class="title">
+                                                <i class="icon-anchor"></i>
+                                                 پست های اخیر شما
+                                            </h3>
+                                        </div><!-- /.portlet-title -->
+                                        <div class="buttons-box">
+                                            <a class="btn btn-sm btn-default btn-round btn-code" rel="tooltip" title="کدها" href="#">
+                                                <i class="fa fa-code"></i>
+                                            </a>
+                                            <a class="btn btn-sm btn-default btn-round btn-fullscreen" rel="tooltip" title="تمام صفحه" href="#">
+                                                <i class="icon-size-fullscreen"></i>
+                                            </a>
+                                            <a class="btn btn-sm btn-default btn-round btn-close" rel="tooltip" title="بستن" href="#">
+                                                <i class="icon-trash"></i>
+                                            </a>
+                                        </div><!-- /.buttons-box -->
+                                    </div><!-- /.portlet-heading -->
+                                    <div class="portlet-body">
+                                        <ul class="nav nav-tabs border">
+                                            <li class="nav-item">
+
+                                            </li>
+                                        </ul>
+
+                                        <div class="tab-content">
+                                            <div id="tab" class="tab-pane active fade show">
+                                                <div class="comments-box">
+                                                    {% for post in recent_posts %}
+                                                    <div class="comment-box">
+                                                        <div class="comment">
+                                                            <a href="javascript:void(0);">
+                                                                <img src="{{ post.author.avatar.url }}" class="img-circle" alt="">
+                                                                <span class="user">
+                                                                    {% if post.author.first_name and post.author.last_name %}
+                                                                    {{ post.author.first_name }} {{ post.author.last_name }}
+                                                                        {% else %}
+                                                                        {{ post.author.username }}
+                                                                    {% endif %}
+                                                                </span>
+                                                            </a>
+                                                            <span class="pull-left text-muted">
+                                                                {{ post.get_pub_datetime_jalali_date }}
+                                                                <i class="icon-clock"></i>
+                                                            </span>
+                                                            <p>
+                                                                <b>{{ post.title }}</b><br />
+                                                                {{ post.description|truncatewords:25 }}
+                                                            </p>
+                                                        </div><!-- /.comment -->
+                                                        <div class="actions">
+                                                            <a href="{% url 'admins:post_detail' post.id %}" class="btn btn-round btn-icon btn-sm btn-primary" rel="tooltip" title="مشاهده">
+                                                                <i class="icon-eye"></i>
+                                                            </a>
+                                                            <span>
+                                                                <form action="" method="POST" class="btn">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" name="requested" value="publish_post" />
+                                                                    <input type="hidden" name="query" value="post" />
+                                                                    <input type="hidden" name="value" value="{{ post.id }}" />
+                                                                    <button class="btn btn-round btn-icon btn-sm btn-info" rel="tooltip" title="منتشر کن" type="submit">
+                                                                        <i class="icon-check"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </span>
+                                                            <span>
+                                                                <form action="" method="POST" class="btn">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" name="requested" value="deactivation" />
+                                                                    <input type="hidden" name="query" value="post" />
+                                                                    <input type="hidden" name="value" value="{{ post.id }}" />
+                                                                    <button class="btn btn-round btn-icon btn-sm btn-warning" rel="tooltip" title="غیرفعال سازی">
+                                                                        <i class="icon-close"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </span>
+                                                            <a href="{% url 'admins:post_delete' post.id %}" class="btn btn-round btn-icon btn-sm btn-danger" rel="tooltip" title="حذف">
+                                                                <i class="icon-trash"></i>
+                                                            </a>
+                                                        </div><!-- /.actions -->
+                                                    </div><!-- /.comment-box -->
+                                                    {% empty %}
+                                                    <span>در حال حاضر هیچ پست اخیری نداری ادمین عزیز:(</span><hr />
+                                                    {% endfor %}
+                                                    <div class="pagination">
+                                                        <span class="step-links">
+                                                            {% if recent_posts.has_previous %}
+                                                                <a href="?page=1">&laquo; اولین</a>
+                                                                <a href="?page={{ recent_posts.previous_page_number }}">قبلی</a>
+                                                            {% endif %}
+
+                                                            <span class="current">
+                                                                صفحه {{ recent_posts.number }} از {{ recent_posts.paginator.num_pages }}.
+                                                            </span>
+
+                                                            {% if recent_posts.has_next %}
+                                                                <a href="?page={{ recent_posts.next_page_number }}">بعدی</a>
+                                                                <span>
+                                                                -
+                                                                </span>
+                                                                <a href="?page={{ recent_posts.paginator.num_pages }}">آخرین &raquo;</a>
+                                                            {% endif %}
+                                                        </span>
+                                                    </div>
+                                                </div><!-- /.comments-box -->
+                                            </div><!-- /.tab-pane -->
+                                        </div><!-- /.tab-content -->
+
+                                    </div><!-- /.portlet-body -->
+                                </div><!-- /.portlet -->
+                            </div><!-- /.col-md-6 -->
+                            <div class="col-xl-6 col-lg-6 col-12">
+                                <div class="portlet box border shadow">
+                                    <div class="portlet-heading">
+                                        <div class="portlet-title">
+                                            <h3 class="title">
+                                                <i class="icon-frame"></i>
+                                                ساخت سریع پست
+                                            </h3>
+                                        </div><!-- /.portlet-title -->
+                                        <div class="buttons-box">
+                                            <a class="btn btn-sm btn-default btn-round btn-code"  rel="tooltip" title="کدها" href="#">
+                                                <i class="fa fa-code"></i>
+                                            </a>
+                                            <a class="btn btn-sm btn-default btn-round btn-collapse" rel="tooltip" title="کوچک کردن" href="#">
+                                                <i class="icon-arrow-up"></i>
+                                            </a>
+                                            <a class="btn btn-sm btn-default btn-round btn-close" rel="tooltip" title="بستن" href="#">
+                                                <i class="icon-trash"></i>
+                                            </a>
+                                        </div><!-- /.buttons-box -->
+                                    </div><!-- /.portlet-heading -->
+                                    <div class="portlet-body min-height-650">
+                                        <form action="" method="POST">
+                                            <div class="form-body">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="requested" value="post_create" />
+                                                <input type="hidden" name="query" value="post_database_table" />
+                                                <input type="hidden" name="value" value="None">
+                                                {{ post_create_form.media }}
+                                                {{ post_create_form|crispy }}
+                                            </div><!-- /.form-body -->
+
+                                            <div class="form-actions m-t-20">
+                                                <button type="submit" class="btn btn-info btn-round btn-block">
+                                                    <i class="icon-check"></i>
+                                                    تائید و ذخیره
+                                                </button>
+                                            </div><!-- /.form-actions -->
+                                        </form>
+                                    </div><!-- /.portlet-body -->
+                                </div><!-- /.portlet -->
+                            </div><!-- /.col-xl-4 -->
+                        </div><!-- /.row -->
+                    </div><!-- /.col-md-12 -->
+                </div><!-- /.row -->
+            </div><!-- /#page-content -->
+{% endblock %}

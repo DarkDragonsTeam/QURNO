@@ -1,0 +1,113 @@
+{% load static %}
+
+<div id="wrapper">
+
+    <!-- BEGIN SIDEBAR -->
+    <div id="sidebar">
+        <div class="sidebar-top">
+            <div class="search-box">
+                <form class="search-form" action="#" method="GET">
+                    <div class="input-group">
+                        <input type="text" class="form-control placeholder-light" placeholder="جستجو..." name="key">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-round submit">
+                                <i class="icon-magnifier"></i>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div><!-- /.search-box -->
+            <div class="user-box">
+                <a href="#">
+                    <img src="{{ request.user.avatar.url }}" alt="عکس پروفایل"
+                        style="height: 75px; width: 75px; border-radius: 50%;">
+                </a>
+                <div class="user-details">
+                    <h4>{% if request.user.first_name and request.user.last_name %}{{ request.user.first_name }} {{ request.user.last_name }}{% else %}{{ request.user.username }}{% endif %}</h4>
+                    <p class="role">مدیر فنی</p>
+                    <div class="dropdown user-login">
+                        <button class="btn btn-xs btn-status dropdown-toggle btn-round" type="button"
+                            data-bs-toggle="dropdown" data-hover="dropdown">
+                            <i class="fa fa-circle text-success"></i>
+                            <span>دردسترس</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-status">
+                            <li>
+                                <a href="#" class="busy">
+                                    <i class="fa fa-circle text-success"></i>
+                                    <span>دردسترس</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="busy">
+                                    <i class="fa fa-circle text-danger"></i>
+                                    <span>مشغول</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-circle text-gray"></i>
+                                    <span>مخفی</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-circle text-warning"></i>
+                                    <span>سایر</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div><!-- /dropdown -->
+                </div><!-- /.user-details -->
+            </div><!-- /.user-box -->
+        </div><!-- /.sidebar-top -->
+        <div class="side-menu-container">
+            <ul class="metismenu" id="side-menu">
+                <li class="{% if request.path_info == "/admins/" %}current active{% endif %}">
+                    <a href="{% url 'admins:admins' %}">
+                        <i class="icon-home"></i>
+                        <span>پیشخوان</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'admins:post_list' %}" class="{% if request.path_info == "/admins/blog/post/list/page/" %}current{% endif %}">
+                        <i class="icon-list"></i>
+                        <span>لیست پست ها</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'admins:post_create' %}" class="{% if request.path_info == "/admins/blog/post/create/" %}current{% endif %}">
+                        <i class="icon-plus"></i>
+                        <span>اضافه کردن پست</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'admins:post_list' request.user.username %}">
+                        <i class="icon-user"></i>
+                        <span>پست های من</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'admins:category_list' %}" class="{% if "/admins/blog/category/list/" in request.path_info %}current{% endif %}">
+                        <i class="icon-pie-chart"></i>
+                        <span>لیست دسته بندی ها</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'admins:category_create' %}" class="{% if request.path_info == "/admins/blog/category/create/" %}current{% endif %}">
+                        <i class="icon-layers"></i>
+                        <span>اضافه کردن دسته بندی</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'admins:terms' %}" class="{% if request.path_info == "/admins/terms/" %}current{% endif %}">
+                        <i class="icon-exclamation"></i>
+                        <span>قوانین و شرایط</span>
+                    </a>
+                </li>
+            </ul><!-- /#side-menu -->
+        </div><!-- /.side-menu-container -->
+    </div><!-- /#sidebar -->
+    <!-- END SIDEBAR -->
+
+</div><!-- /#wrapper -->

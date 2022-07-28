@@ -1,0 +1,166 @@
+{% extends "_base_admins.html" %}
+{% load static %}
+
+{% block title %}
+لیست دسته بندی ها
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+    <div class="row">                    
+        <!-- BEGIN BREADCRUMB -->
+        <div class="col-md-12">
+            <div class="breadcrumb-box border shadow"> 
+                <ul class="breadcrumb">
+                    <li><a href="dashboard.html">پیشخوان</a></li>
+                    <li><a href="{% url 'admins:category_list' %}">لیست دسته بندی ها</a></li>                        
+                </ul>
+                <div class="breadcrumb-left">
+                    {{ today }} - 
+                    {% include "admins/includes/_get_weekday.html" %}
+                    <i class="icon-calendar"></i>
+                </div><!-- /.breadcrumb-left -->
+            </div><!-- /.breadcrumb-box -->
+        </div><!-- /.col-md-12 -->
+        <!-- END BREADCRUMB -->                    
+        
+        <div class="col-lg-12">
+            <div class="portlet box border shadow">
+                <div class="portlet-heading">
+                    <div class="portlet-title">
+                        <h3 class="title">لیست دسته بندی ها {% if category_designer %}
+                            {% if category_designer.first_name and category_designer.last_name %}
+                             ی {{ category_designer.first_name }} {{ category_designer.last_name }}
+                                {% else %}
+                                 ی {{ category_designer.username }}
+                            {% endif %}
+                        {% endif %} </h3>
+                    </div><!-- /.portlet-title -->
+                </div><!-- /.portlet-heading -->
+                <div class="portlet-body">
+                    <div class="row">
+                        <div class="col-md-4 col-12 m-b-20">
+                            <a class="btn btn-success btn-round" href="{% url 'admins:category_create' %}">
+                                <i class="icon-plus"></i>
+                                افزودن
+                            </a>
+                        </div><!-- /.col-md-4 -->
+                        <div class="col-md-4 col-12 m-b-20">
+                            <form role="form">
+                                <div class="input-group round">
+                                    <input type="text" class="form-control" placeholder="جستجو..."> 
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">
+                                            <i class="icon-magnifier"></i> 
+                                        <div class="paper-ripple"></button>
+                                    </span>
+                                </div><!-- ./input-group -->
+                            </form>
+                        </div><!-- /.col-md-4 -->
+                    </div><!-- /.row -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th><i class="icon-energy"></i></th>
+                                    <th>نام/عنوان</th>
+                                    <th>طراح دسته بندی</th>
+                                    <th>وضعیت</th>
+                                    <th>عملگر ها</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for category in categories %}
+                                <tr>
+                                    <td>{{ forloop.counter }} -> {{ category.id }}</td>
+                                    <td>{{ category.title|truncatewords:10 }}</td>
+                                    <td>
+                                        <a href="{% url 'admins:category_list' category.designer.username %}">
+                                            <img class="img-person img-circle" src="{{ category.designer.avatar.url }}">
+                                            <span>
+                                                {% if category.designer.first_name and category.designer.last_name %}
+                                                {{ category.designer.first_name }} {{ category.designer.last_name }}
+                                                    {% else %}
+                                                    {{ category.designer.username }}
+                                                {% endif %}
+                                        </span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {% if category.active %}
+                                        <label class="label-default round">فعاله:)</label>
+                                            {% else %}
+                                            <label class="label-warning round">خاموشه:(</label>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'admins:category_detail' category.id %}" class="btn btn-success btn-round">
+                                            <i class="icon-eyeglass"></i>
+                                            مشاهده
+                                        </a>
+                                        <a href="{% url 'admins:category_update' category.id %}" class="btn btn-info btn-round">
+                                            <i class="icon-note"></i>
+                                            ویرایش
+                                        </a>
+                                        <a href="{% url 'admins:category_delete' category.id %}" class="btn btn-danger btn-round">
+                                            <i class="icon-trash"></i>
+                                            حذف
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div><!-- /.table-responsive -->
+                    <div class="text-center">
+                        <ul class="pagination round">
+                            {% if page_obj.has_previous %}
+                            <li>
+                                <a href="/admins/blog/category/list/page/?page=1">
+                                    <i class="icon-control-end"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+                            
+                            {% if page_obj.has_previous %}
+                            <li>
+                                <a href="?page={{ page_obj.previous_page_number }}">
+                                    <i class="icon-arrow-right"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            {% for page_num in page_obj.adjusted_elided_pages %}
+                                {% if page_num == page_obj.paginator.ELLIPSIS %}
+                                <span class="active">...</span>
+                                    {% else %}
+                                    <li>
+                                        <a href="?page={{ page_num }}">{{ page_num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if page_obj.has_next %}
+                            <li>
+                                <a href="?page={{ page_obj.next_page_number }}">
+                                    <i class="icon-arrow-left"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            {% if page_obj.has_next %}
+                            <li>
+                                <a href="?page={{ page_obj.paginator.num_pages }}">
+                                    <i class="icon-control-start"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div><!-- /.text-center -->
+                </div><!-- /.portlet-body -->
+            </div><!-- /.portlet -->
+        </div><!-- /.col-lg-12 -->
+        
+    </div><!-- /.row -->
+</div><!-- /#page-content -->
+{% endblock %}

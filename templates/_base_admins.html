@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="rtl">
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        
+        <!-- BEGIN META TAGS -->
+        {% include 'admins/includes/_meta_tags.html' %}
+        <!-- END META TAGS -->
+        
+        <!-- BEGIN FAVICON -->
+        {% include 'admins/includes/_favicon.html' %}
+        <!-- END FAVICON -->
+
+        <!-- BEGIN CSS -->
+        {% include 'admins/includes/_stylesheets.html' %}
+        <!-- END CSS -->
+
+        <!-- BEGIN PAGE CSS -->
+        {% include 'admins/includes/_required_stylesheets.html' %}
+        <!-- END PAGE CSS -->
+    </head>
+    <body class="theme-deeporange fix-header sidebar-extra">
+        <!-- BEGIN LOADER -->
+        {% include 'admins/includes/_loader.html' %}
+        <!-- END LOADER -->
+        
+        <!-- BEGIN HEADER -->
+        {% include 'admins/includes/_header.html' %}
+        <!-- END HEADER -->
+              
+        <!-- BEGIN WRAPPER -->
+        {% include 'admins/includes/_navbar.html' %}
+        <!-- END WRAPPER -->
+        
+        <!-- BEGIN CONTENT -->
+        {% block content %}
+        
+        {% endblock %}
+        <!-- END CONTENT -->
+        
+        <!-- BEGIN SETTING -->
+        {% include 'admins/includes/_settings.html' %}
+        <!-- END SETTING -->    
+        
+        <!-- BEGIN JS -->
+        {% include 'admins/includes/_scripts.html' %}
+        <!-- END JS -->
+        
+        <!-- BEGIN PAGE JAVASCRIPT -->
+        {% include 'admins/includes/_required_scripts.html' %}
+        <!-- END PAGE JAVASCRIPT -->    
+    </body>
+</html>

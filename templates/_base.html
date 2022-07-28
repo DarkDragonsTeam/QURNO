@@ -1,0 +1,63 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="fa">
+
+
+<head>
+  <title>{% block title %}
+  
+  {% endblock %}</title>
+
+  {# Here you will get acquainted with a new tag. include. This tag can fetch files without any changes, and then #}
+  {# where the include is written, it writes the information that has been fetched (without review and modification). #}
+  {# It is different from import and is essentially a function in the PHP programming language. #}
+  {% include 'includes/core/_meta.html' %}
+
+  {# Here we include CSS and Bootstrap styles. #}
+  {% include 'includes/core/_stylesheets.html' %}
+
+  {# Here we also include the small icon at the top of the site. #}
+  {% include 'includes/core/_favicon.html' %}
+</head>
+<body>
+
+{% include 'includes/core/_header_responsive_system.html' %}
+
+{% include 'includes/core/_header.html' %}
+
+<div class="search-block">
+  <div data-toggle="search-close">
+    <span class="ti ti-x text-primary"></span>
+  </div>
+
+  <div class="mt-4 card-meta">
+    <p class="h4 mb-3">مورد مد نظرت رو با تگ پیدا کن ستون</p>
+    <ul class="card-meta-tag list-inline">
+      {% block tags %}
+      
+      {% endblock %}
+    </ul>
+  </div>
+
+  {% block categories %}
+  {% endblock %}
+
+  <br /><br /><br /><br /><br />
+
+  <form action="{% url 'blog:post_search' %}" method="get" role="form">
+    <input type="text" name="query" id="js-search-input" placeholder="دنبال چی میگردی ستونم؟" aria-label="search-query" />
+    <input style="margin-top: 25px;" type="submit" class="btn btn-primary" value="سرچ کن سید" />
+  </form>
+</div> <br /><br />
+
+{% block content %}
+
+{% endblock %}
+
+{% include 'includes/core/_footer.html' %}
+
+{% include 'includes/core/_scripts.html' %}
+
+</body></html>

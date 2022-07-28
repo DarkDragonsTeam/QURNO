@@ -1,0 +1,30 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block title %}
+صفحه مد نظرت پیدا نشد:(
+{% endblock %}
+
+{% block tags %}
+{% include "blog/includes/_tag_list.html" %}
+{% endblock %}
+
+{% block categories %}
+{% include "blog/includes/_category_list.html" %}
+{% endblock %}
+
+{% block content %}
+<section class="section-sm pb-0">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="text-center">
+            <h1 class="page-not-found-title">404</h1>
+            <p class="mb-4">داش (یا آبجی) خیلی شرمنده، صفحه ای که دنبالش بودی رو پیدا نکردم</p>
+            <button onclick="window.history.go(-1);" class="btn btn-primary">برگرد به همون جایی که بودی لعنتی😒</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

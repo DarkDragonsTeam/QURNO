@@ -1,0 +1,68 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block title %}
+درباره ما:(
+{% endblock %}
+
+{% block tags %}
+{% include "blog/includes/_tag_list.html" %}
+{% endblock %}
+
+{% block categories %}
+{% include "blog/includes/_category_list.html" %}
+{% endblock %}
+
+{% block content %}
+<section class="page-header section-sm">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h1 class="section-title h2 mb-3">
+            <span>درباره ما</span>
+          </h1>
+          <ul class="list-inline breadcrumb-menu mb-3">
+            <li class="list-inline-item"><a href="{% url 'pages:index' %}"><i class="ti ti-home"></i>  <span>خانه</span></a></li>
+            <li class="list-inline-item">• &nbsp; <a href="{% url 'pages:about' %}"><span>درباره ما</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10 text-center">
+          <h2 class="text-dark mb-0">ما DarkDragons هستیم <br>تیمی از توسعه دهندگان و هنرمندان مبتنی بر رادیو اکتیو:)</h2>
+        </div>
+      </div>
+      
+      <div class="py-5 my-3">
+        <div class="row g-4 justify-content-center text-center">
+          <div class="col-lg-6 image-grid-1">
+            <img class="w-100 h-auto rounded" src="{% static 'core/assets/images/about/the-qurno-project-unveiling-festival-1.jpg' %}" alt="" width="620" height="346">
+          </div>
+          
+          <div class="col-lg-3 col-6 image-grid-2">
+            <img class="img-fluid rounded" src="{% static 'core/assets/images/about/the-qurno-project-unveiling-festival-2.jpg' %}" alt="" width="460" height="515">
+          </div>
+          
+          <div class="col-lg-3 col-6 image-grid-3">
+            <img class="img-fluid rounded" src="{% static 'core/assets/images/about/the-qurno-project-unveiling-festival-3.jpg' %}" alt="" width="460" height="444">
+          </div>
+        </div>
+      </div>
+  
+      <div class="row justify-content-center">
+        <div class="col-lg-10 text-center">
+          <div class="content">
+            <p>این اولین پروژه متن باز DarkDragons است. DarkDragons یک تیم توسعه نرم افزار و هنر است که همواره به توسعه دانش ایرانیان در حوضه های هنر کامپیوتر کمک میکند. QURNO PROJECT  در تاریخ 1 مرداد 1401 تکمیل میشود. این آغازی بر فصل دوم DarkDragons: RadioActive Season خواهد بود. در واقع نهایت تلاشمان برای توسعه اهدافمان خواهی داشت. در واقع پروژه کورنو، ورود DarkDragons به دنیای متن باز است و از این پس بیشتر پروژه های این تیم تحت مجوز های آزاد انتشار خواهند یافت.
+            </p>
+            <p>این هدف DarkDragons است! توسعه <b>هنر</b> های کامپیوتری؛ اهداف DarkDragons بسیار بیشتر از یک هدف خاص است، اما خب میتوان مهم ترین هدف DarkDragons را همین دانست. با تشکر از همکاران در توسعه QURNO PROJECT: جناب آقای: شاهین احمد زاده، جناب آقای محمد فتاحیان، جناب آقای هادی حاجی حسینی، جناب آقای شاهرخ کیانی، و با تشکر ویژه از سینا ستاری و جناب آقای حسین طاهری عزیز، و سایر دست اندر کاران پروژه و منبع آزاد کورنو.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

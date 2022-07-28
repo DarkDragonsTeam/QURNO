@@ -1,0 +1,202 @@
+{% extends "_base_admins.html" %}
+{% load static %}
+
+{% block title %}
+پروفایل شما
+{% endblock %}
+
+{% block content %}
+<!-- BEGIN PAGE CONTENT -->
+<div id="page-content">
+    <div class="row">
+        <!-- BEGIN BREADCRUMB -->
+        <div class="col-md-12">
+            <div class="breadcrumb-box border shadow">
+                <ul class="breadcrumb">
+                    <li><a href="{% url 'admins:admins' %}">پیشخوان</a></li>
+                    <li class="active">پروفایل / ویرایش پروفایل</li>
+                </ul>
+                <div class="breadcrumb-left">
+                    {{ today }} - 
+                    {% include "admins/includes/_get_weekday.html" %}
+                    <i class="icon-calendar"></i>
+                </div><!-- /.breadcrumb-left -->
+            </div><!-- /.breadcrumb-box -->
+        </div><!-- /.col-md-12 -->
+        <!-- END BREADCRUMB -->
+
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-12">
+                <div class="portlet box border shadow">
+                    <div class="portlet-body edit-form">
+                        <div class="alert alert-warning fill curve text-center">
+                            <i class="icon-bell"></i>
+                            مدارک احراز هویت شما در حال بررسی می باشد. لطفا تا مشخص شدن وضعیت صبور باشید.
+                        </div><!-- /.alert -->
+                        <div class="row">
+                            <div class="col-lg-6 col-md-10 m-auto m-b-30">
+                                <div class="text-center">
+                                    <div class="user-box">
+                                        <a href="{{ user.avatar.url }}" target="_blank">
+                                            <img src="{{ user.avatar.url }}" alt="عکس پروفایل"
+                                                style="border-radius: 150%; width: 100px; height: 100px;">
+                                        </a>
+                                        <div class="user-details">
+                                            <h4>{{ user.username }}</h4>
+                                            <p class="role">مدیر ارشد</p>
+                                            <div class="dropdown user-login">
+                                                <button class="btn btn-xs btn-status dropdown-toggle btn-round"
+                                                    type="button" data-bs-toggle="dropdown" data-hover="dropdown">
+                                                    <i class="fa fa-circle text-success"></i>
+                                                    <span>دردسترس</span>
+                                                    <div class="paper-ripple">
+                                                        <div class="paper-ripple__background"></div>
+                                                        <div class="paper-ripple__waves"></div>
+                                                    </div>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-status">
+                                                    <li>
+                                                        <a href="#" class="busy">
+                                                            <i class="fa fa-circle text-success"></i>
+                                                            <span>دردسترس</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" class="busy">
+                                                            <i class="fa fa-circle text-danger"></i>
+                                                            <span>مشغول</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+                                                            <i class="fa fa-circle text-gray"></i>
+                                                            <span>مخفی</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+                                                            <i class="fa fa-circle text-warning"></i>
+                                                            <span>سایر</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div><!-- /dropdown -->
+                                        </div><!-- /.user-details -->
+                                    </div><!-- /.user-box -->
+                                </div><!-- /.text-center -->
+                                <div class="form-group relative mt-3 mb-4">
+                                    <input name="avatar" type="file" class="form-control">
+                                    <div class="input-group round">
+                                        <input type="text" class="form-control file-input"
+                                            placeholder="برای آپلود کلیک کنید">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-info">
+                                                <i class="icon-picture"></i>
+                                                آپلود عکس
+                                            </button>
+                                        </span>
+                                    </div><!-- /.input-group -->
+                                    {% if form.avatar.errors %}
+                                    <span style="color: red;">فرمت فایل استاندارد نیست، یه عکس بفرست بی زحمت دادا / شایدم حجم فایل زیاده</span>
+                                    {% endif %}
+                                    <div class="help-block"></div>
+                                </div><!-- /.form-group -->
+                                <hr>
+                                    <div class="form-body">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="txt-username">نام کاربری</label>
+                                                    <div class="input-group round">
+                                                        <span class="input-group-addon">
+                                                            <i class="icon-user"></i>
+                                                        </span>
+                                                        <input value="{{ user.username }}" type="text" id="txt-username" name="username"
+                                                            class="form-control">
+                                                    </div><!-- /.input-group -->
+                                                </div><!-- /.form-group -->
+                                                {% if form.username.errors %}
+                                                <span style="color: red;">این نام کاربری قبلا وارد شده است، لطفا یک نام کاربری دیگر وارد کنید.</span>
+                                                {% endif %}
+                                            </div><!-- /.col -->
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="txt-first_name">نام</label>
+                                                    <div class="input-group round">
+                                                        <span class="input-group-addon">
+                                                            <i class="icon-user"></i>
+                                                        </span>
+                                                        <input {% if user.first_name %}value="{{ user.first_name }}"{% endif %} type="text" id="txt-first_name" name="first_name"
+                                                            class="form-control">
+                                                    </div><!-- /.input-group -->
+                                                </div><!-- /.form-group -->
+                                                {% if form.first_name.errors %}
+                                                <span style="color: red;">فرمت استاندارد نیست (آسیب های امنیتی شناسایی شد...)</span>
+                                                {% endif %}
+                                            </div><!-- /.col -->
+                                        </div><!-- /.row -->
+    
+                                        <div class="form-group">
+                                            <label for="txt-last_name">نام خانوادگی</label>
+                                            <div class="input-group round">
+                                                <span class="input-group-addon">
+                                                    <i class="icon-user"></i>
+                                                </span>
+                                                <input {% if user.last_name %}value="{{ user.last_name }}"{% endif %} type="text" id="txt-last_name" name="last_name"
+                                                    class="form-control mobile">
+                                            </div><!-- /.input-group -->
+                                            {% if form.last_name.errors %}
+                                            <span style="color: red;">فرمت استاندارد نیست (آسیب های امنیتی شناسایی شد...)</span>
+                                            {% endif %}
+                                        </div><!-- /.form-group -->
+    
+                                        <div class="form-group">
+                                            <label for="txt-email">ایمیل</label>
+                                            <div class="input-group round">
+                                                <span class="input-group-addon">
+                                                    <i class="icon-envelope"></i>
+                                                </span>
+                                                <input {% if user.email %}value="{{ user.email }}"{% endif %} type="email" id="txt-email" name="email"
+                                                    class="form-control ltr text-left">
+                                            </div><!-- /.input-group -->
+                                            {% if form.email.errors %}
+                                            <span style="color: red;">ایمیل باید یکتا باشد / یا / فرمت ایمیل درست نیست.</span>
+                                            {% endif %}
+                                        </div><!-- /.form-group -->
+    
+                                        <div class="form-group">
+                                            <label>بیوگرافی</label>
+                                            <div class="input-group round">
+                                                <span class="input-group-addon">
+                                                    <i class="icon-location-pin"></i>
+                                                </span>
+                                                <textarea name="bio" class="form-control" rows="4"
+                                                    placeholder="بیوگرافی شما">{% if user.bio %}{{ user.bio }}{% endif %}</textarea>
+                                            </div><!-- /.input-group -->
+                                        </div><!-- /.form-group -->
+                                        {% if form.bio.errors %}
+                                        <span style="color: red;">ثبت اطلاعات مجاز نیست (آسیب های امنیتی شاناسایی شد...)</span>
+                                        {% endif %}
+                                    </div><!-- /.form-body -->
+    
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-info btn-round">
+                                            <i class="icon-check"></i>
+                                            ذخیره
+                                        </button>
+                                        <button onclick="window.history.go(-1);" class="btn btn-warning btn-round pull-left">
+                                            <i class="icon-close"></i>
+                                            بازگشت
+                                        </button>
+                                    </div><!-- /.form-actions -->
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+                    </div><!-- /.portlet-body -->
+                </div><!-- /.portlet -->
+            </div><!-- /.col-12 -->
+        </form>
+    </div><!-- /.row -->
+</div><!-- /#page-content -->
+<!-- END PAGE CONTENT -->
+{% endblock %}

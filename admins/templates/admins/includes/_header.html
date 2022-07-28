@@ -1,0 +1,67 @@
+{% load static %}
+
+<div class="navbar navbar-fixed-top" id="main-navbar">
+    <div class="header-right">
+        <a href="javascript:void(0);" class="logo-con">
+            <img src="{% static 'admins/assets/images/logo.png' %}" class="img-responsive center-block"
+                alt="لوگو قالب مدیران">
+        </a>
+    </div><!-- /.header-right -->
+    <div class="header-left">
+        <div class="top-bar">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" class="btn" id="toggle-sidebar">
+                        <span class="menu"></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="btn open" id="toggle-sidebar-top">
+                        <i class="icon-user-following"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="btn" id="toggle-dark-mode">
+                        <i class="icon-bulb"></i>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-left">
+                <li class="dropdown dropdown-user">
+                    <a href="#" class="dropdown-toggle dropdown-hover" data-bs-toggle="dropdown">
+                        <img style="height: 50px; width: 50px; border-radius: 50%;" src="{{ request.user.avatar.url }}" alt="عکس پرفایل">
+                        <span>
+                            {% if request.user.first_name and request.user.last_name %}
+                            {{ request.user.first_name }} {{ request.user.last_name }}
+                                {% else %}
+                                {{ request.user.username }}
+                            {% endif %}
+                        </span>
+                        <i class="icon-arrow-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="{% url 'admins:profile' %}">
+                                <i class="icon-note"></i>
+                                ویرایش پروفایل
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'password_change' %}">
+                                <i class="icon-key"></i>
+                                تغییر رمز عبور
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="{% url 'logout' %}">
+                                <i class="icon-power"></i>
+                                خروج
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul><!-- /.navbar-left -->
+        </div><!-- /.top-bar -->
+    </div><!-- /.header-left -->
+</div><!-- /.navbar -->

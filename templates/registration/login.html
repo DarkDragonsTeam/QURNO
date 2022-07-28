@@ -1,0 +1,112 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+    <head>
+        <title>قالب مدیریتی مدیران</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="قالب مدیریت ایرانی مدیران ">
+        <meta name="keywords" content="قالب مدیریت, قالب داشبورد, قالب ادمین, قالب مدیران, قالب مدیریت راستچین , قالب ایرانی مدیریت, پوسته مدیریت, قالب ادمین داشبورد سایت, قالب مدیریتی, مدیران, قالب مدیریت مدیران, پنل مدیریت, پنل مدیریت مدرن, قالب ادمین متریال, قالب مدیریت بوت استرپ, قالب ادمین بوتسترپ, قالب ادمین سایت, پوسته مدیریتی ایرانی, قالب مدیرتی مدیران ایرانی, بهترین قالب مدیریت, قالب مدیریت ریسپانسیو, قالب مدیریت ارزان, قالب admin">
+        <link rel="shortcut icon" href="{% static 'admins/assets/images/favicon.png' %}">
+
+        <!-- BEGIN CSS -->
+        <link href="{% static 'admins/assets/plugins/bootstrap/bootstrap5/css/bootstrap.rtl.min.css' %}" rel="stylesheet">
+        <link href="{% static 'admins/assets/plugins/simple-line-icons/css/simple-line-icons.min.css' %}" rel="stylesheet">
+        <link href="{% static 'admins/assets/plugins/sweetalert2/dist/sweetalert2.min.css' %}" rel="stylesheet">
+        <link href="{% static 'admins/assets/plugins/paper-ripple/dist/paper-ripple.min.css' %}" rel="stylesheet">
+        <link href="{% static 'admins/assets/plugins/iCheck/skins/square/_all.css' %}" rel="stylesheet">
+        <link href="{% static 'admins/assets/css/style.css' %}" rel="stylesheet">
+        <link href="{% static 'admins/assets/css/colors.css' %}" rel="stylesheet">
+        <!-- END CSS -->
+        
+        
+    </head>
+    <body class="fix-header active-ripple theme-blue">
+        <!-- BEGIN LOEADING -->
+        <div id="loader">
+            <div class="spinner"></div>
+        </div><!-- /loader -->
+        <!-- END LOEADING -->
+        
+        <!-- BEGIN WRAPPER -->
+        <div class="fixed-modal-bg"></div>
+        <a href="#" class="btn btn-info btn-icon btn-round btn-lg" id="toggle-dark-mode">
+            <i class="icon-bulb"></i>
+        </a>
+        <div class="modal-page shadow">
+            <div class="container-fluid">                
+                <div class="row">
+                    
+                    <div class="col-md-12">
+                        <div class="logo-con m-t-10 m-b-10">
+                            <img src="{% static 'admins/assets/images/logo-dark.png' %}" class="dark-logo center-block img-responsive" alt="logo">
+                            <img src="{% static 'admins/assets/images/logo.png' %}" class="light-logo center-block img-responsive" alt="logo">
+                        </div><!-- /.logo-con -->
+
+                        <h2 class="text-center m-b-20">وارد شوید</h2>
+                        <hr>
+                        <form id="form" class="m-t-30 m-b-30" action="" method="POST" role="form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="email" class="sr-only">ایمیل / نام کاربری</label>
+                                <div class="input-group round">
+                                    <span class="input-group-addon">
+                                        <i class="icon-envelope"></i>
+                                    </span>
+                                    <input name="username" id="email" class="form-control ltr text-left" type="text" required>
+                                </div><!-- /.input-group -->
+                            </div><!-- /.form-group -->
+                            <div class="form-group">
+                                <label for="password" class="sr-only">رمز عبور</label>
+                                <div class="input-group round">
+                                    <span class="input-group-addon">
+                                        <i class="icon-key"></i>
+                                    </span>
+                                    <input name="password" id="password" class="form-control ltr text-left" type="password" minlength="5" required>
+                                </div><!-- /.input-group -->
+                                
+                                {% if form.errors %}
+                                    <span style="color: red;">ایمیل / نام کاربری یا رمز شما اشتباه است.</span>
+                                {% endif %}
+                                    
+                            </div><!-- /.form-group -->
+                            <p>
+                                <button class="btn btn-info btn-round btn-block" type="submit">
+                                    <i class="icon-paper-plane font-lg"></i>
+                                    ورود
+                                </button>
+                            </p>
+                        </form>
+                        <hr class="m-b-30">
+                        <a href="forget.html" class="btn btn-default btn-round btn-block m-b-10">
+                            <i class="icon-refresh font-lg"></i> 
+                            بازیابی رمز  عبور
+                        </a>
+                        <a href="register.html" class="btn btn-default btn-round btn-block">
+                            <i class="icon-user-follow font-lg"></i>
+                            حساب ندارید، ثبت نام کنید!    
+                        </a>
+                    </div><!-- /.col-md-12 -->                    
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div><!-- /.modal-page -->
+        <!-- END WRAPPER -->
+        
+        <!-- BEGIN JS -->
+        <script src="{% static 'admins/assets/plugins/jquery/dist/jquery-3.1.0.js' %}"></script>
+        <script src="{% static 'admins/assets/plugins/jquery-migrate/jquery-migrate-1.2.1.min.js' %}"></script>
+        <script src="{% static 'admins/assets/plugins/bootstrap/bootstrap5/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'admins/assets/plugins/paper-ripple/dist/PaperRipple.min.js' %}"></script>
+        <script src="{% static 'admins/assets/plugins/sweetalert2/dist/sweetalert2.min.js' %}"></script>
+        <script src="{% static 'admins/assets/plugins/iCheck/icheck.min.js' %}"></script>
+        <script src="{% static 'admins/assets/plugins/jquery-validation/dist/jquery.validate.min.js' %}"></script>
+        <script src="{% static 'admins/assets/plugins/jquery-validation/src/localization/messages_fa.js' %}"></script>
+        <script src="{% static 'admins/assets/js/core.js' %}"></script>
+        
+        <!-- BEGIN PAGE JAVASCRIPT -->
+        <script src="{% static 'admins/assets/js/pages/login.js' %}"></script>
+        <!-- END PAGE JAVASCRIPT -->
+                
+    </body>
+</html>

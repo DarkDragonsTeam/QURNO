@@ -1,0 +1,110 @@
+{% extends "_base_admins.html" %}
+{% load static %}
+
+{% block title %}
+جزئیات پست {{ post.title }}
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+    <div class="raw">
+        <div class="col-12">
+            <div class="portlet box border shadow">
+                <div class="portlet-heading">
+                    <div class="portlet-title">
+                        <h3 class="title">                                        
+                            <i class="icon-note"></i>
+                            جزئیات پست <b>{{ post.title }}</b>
+                        </h3>
+                    </div><!-- /.portlet-title -->
+                    <div class="buttons-box">
+                        <a class="btn btn-sm btn-default btn-round btn-fullscreen" rel="tooltip" title="تمام صفحه" href="#">
+                            <i class="icon-size-fullscreen"></i>
+                        </a>
+                        <a class="btn btn-sm btn-default btn-round btn-collapse" rel="tooltip" title="کوچک کردن" href="#">
+                            <i class="icon-arrow-up"></i>
+                        </a>
+                    </div><!-- /.buttons-box -->
+                </div><!-- /.portlet-heading -->
+                <div class="portlet-body">
+                    <div style="width: 100%; height: 100%;">
+                        <center><img style="width: 50%; height: 50%;" src="{{ post.banner.url }}" /></center><br />
+                        <center><h1 style="font-size: 36px;">{{ post.title }}</h1></center>
+                        <hr />
+                        <span style="font-size: 14px;">
+                            توضیحات کوتاه پست: {{ post.description }} 
+                        </span>
+                        <hr />
+                        <div style="width: 100%; height: 100%;">
+                            <span style="font-size: 14px;">محتوا:</span> <br /><br />
+                            <div style="width: 100%; height: 100%;">
+                                {{ post.content|safe }}
+                            </div>
+                        </div>
+                        <hr />
+                        <span style="font-size: 14px;">
+                            تاریخ و زمان انتشار پست (به شمسی): {{ post.get_pub_datetime_jalali_date }}
+                        </span>
+                        <hr />
+                        <span style="font-size: 14px">
+                            تاریخ و زمان انتشار پست (به میلادی): {{ post.pub_datetime }}
+                        </span>
+                        <hr />
+                        <span style="font-size: 14px">
+                            تگ های پست:
+                            <ul>
+                                {% for tag in post.tags.all %}
+                                <li>{{ tag.name }}</li>
+                                {% empty %}
+                                این پست تگ نداره:(
+                                {% endfor %}
+                            </ul>
+                        </span>
+                        <hr />
+                        <span style="font-size: 14px;">
+                            این پست در دسته بندی "<b>{{ post.category.title }}</b>" قرار دارد.
+                        </span>
+                        <hr />
+                        <span style="font-size: 14px;">
+                            وضعیت:
+                            {% if post.status == "1" %}
+                            <span class="btn btn-success rounded">منتشر شده:)</span>
+                                {% else %}
+                                <span class="btn btn-danger rounded">پیش نویس:(</span>
+                            {% endif %}
+                        </span>
+                        <hr />
+                        <span style="font-size: 14px;">
+                            تعداد بازدید های پست: {{ post.views }}
+                        <span>
+                        <hr />
+                        <span style="font-size: 14px;">
+                            وضعیت فعال سازی پست: 
+                            {% if post.active %}
+                            <span class="btn btn-primary rounded">پست فعاله:)</span>
+                            {% else %}
+                            <span class="btn btn-warning rounded">پست خاموشه:(</span>
+                            {% endif %}
+                        </span>
+                        <hr />
+                        <span style="font-size: 14px;">
+                            عملگر ها:
+                            <span class="btn btn-default curve"><a href="{% url 'admins:post_update' post.id %}">به روزرسانی پست</a></span>
+                            <span class="btn btn-secondary curve"><a style="color: white;" href="{% url 'admins:post_delete' post.id %}">حذف پست</a></span>
+                        </span>
+                        <hr />
+                        <span dir="ltr">
+                            <div dir="ltr">
+                                آدرس دقیقِ صفحه در پنل کاربران - <a href="{% url 'blog:post_detail' post.slug %}">qurno.project2/blog/post/detail/{{ post.slug }}/</a>
+                                {% if not post.active and post.status == "0" and post.pub_datetime != time_now %}
+                                <p style="color: red;">توجه: پست در حالت انتشار نیست. امکان بازگشت خطای 404 وجود دارد</p>
+                                {% endif %}
+                            </div>
+                        </span>
+                    </div>
+                </div><!-- /.portlet-body -->
+            </div><!-- /.portlet -->
+        </div><!-- /.col-12 -->
+    </div>
+</div>
+{% endblock %}

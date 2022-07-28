@@ -1,0 +1,81 @@
+{% extends "_base_admins.html" %}
+{% load static %}
+
+{% block title %}
+شرایط و قوانین مدیریت
+{% endblock %}
+
+{% block content %}
+<!-- BEGIN PAGE CONTENT -->
+<div id="page-content">
+                <div class="row">
+                    <!-- BEGIN BREADCRUMB -->
+                    <div class="col-md-12">
+                        <div class="breadcrumb-box border shadow">
+                            <ul class="breadcrumb">
+                                <li><a href="{% url 'admins:admins' %}">پیشخوان</a></li>
+                                <li class="active">قوانین و شرایط</li>
+                            </ul>
+                            <div class="breadcrumb-left">
+                                {{ today }} -
+                                {% include "admins/includes/_get_weekday.html" %}
+                                <i class="icon-calendar"></i>
+                            </div><!-- /.breadcrumb-left -->
+                        </div><!-- /.breadcrumb-box -->
+                    </div><!-- /.col-md-12 -->
+                    <!-- END BREADCRUMB -->
+
+                    <div class="col-12">
+                        <div class="portlet box border shadow">
+                            <div class="portlet-heading">
+                                <div class="portlet-title">
+                                    <h3 class="title">
+                                        <i class="icon-note"></i>
+                                        قوانین و شرایط استفاده از <b>QURNO</b>
+                                    </h3>
+                                </div><!-- /.portlet-title -->
+                                <div class="buttons-box">
+                                    <a class="btn btn-sm btn-default btn-round btn-fullscreen" rel="tooltip" title="تمام صفحه" href="#">
+                                        <i class="icon-size-fullscreen"></i>
+                                    </a>
+                                    <a class="btn btn-sm btn-default btn-round btn-collapse" rel="tooltip" title="کوچک کردن" href="#">
+                                        <i class="icon-arrow-up"></i>
+                                    </a>
+                                </div><!-- /.buttons-box -->
+                            </div><!-- /.portlet-heading -->
+                            <div class="portlet-body">
+                                <span>
+                                    <p>خب، حقیقتا نمیخوایم که به داستان زیاد پیچ و تاب بدیم! حقیقت اینه که کورنو یک Kernel برای طراحی سایت های مبتنی بر Django هستش، که یک استاندارد های خاص داره. استاندارد های این وبلاگ با استاندارد های جهانی فرق میکنن، و برای کمپانی های خیلی بزرگ منابست هستش، QURNO PROJECT همونطوری که تاکید شد، یه پروژه هستش که از قوانین پروژه های <i>Based of GNU</i> تبعیت میکنه. در واقع نهایت تلاش ما اینه که یک وبلاگ بسازیم که شما هر امکانی رو که بخواین توش باشه و صرفا لازم باشه که قالب های اون رو تغییر بدید. البته که نیاز به تغییر قالب قطعا خواهد بود، چون قالب هایی که برای این توزیع از QURNO استفاده شده اند، پولی هستند و برای خرید آنها باید به سایت <strong><a target="_blank" href="https://www.rtl-theme.com/">راست چین</a></strong> مراجعه کنید. این توزیع Dina نام دارد و بصورت کلی یک نمونه ی حداکثری از امکانات QURNO است.</p>
+                                </span>
+                                <hr />
+                                <div>
+                                    <h1 style="color: black;">کورنو رو کجا ها باید استفاده کنم؟</h1>
+                                </div>
+                                <span>
+                                    <p>آزادید هر جایی و هر مکانی که خواستید برای یک بلاگ، کورنو رو انتخاب کنید. ما سعی کردیم نهایت سرعت، امنیت و استاندارد های جهانی رو در نظر بگیریم تا نتیجه ی خوبی به شما عزیزان ارائه بدیم، اما ممکنه در این نسخه های اول کورنو، به مشکلاتی بر بخوریم که از شما عزیزان خواهشمندیم در این امر ما رو یاری کنید.
+                                    <br />
+                                    در ضمن این رو هم یادآوری میکنیم که QURNO PROJECT یک پروژه ی آزاد و رایگانه و میتونید اون رو بدون هیچ نگرانی و محدودیتی استفاده کنید.
+                                    </p>
+                                </span>
+                                <hr />
+                                <div>
+                                    <h3 style="color: black;">آیا قالب های این توزیع <small>(Dina)</small> رایگان هستند؟</h3>
+                                </div>
+                                <div>
+                                    <p>
+                                        متاسفانه خیر! این توزیع از دو قالبِ Modiran (مدیران) و کورنو بلاگ (QURNO) استفاده میکند که در وبگاه راست چین به فروش گذاشته میشوند. این قالب ها نمونه های حداکثری از QURNO هستند و کپی برداری از آنها شرعا و قانونا حرام و ممنوع است. برای استفاده آزاد و آنلاین سازی این قالب ها، باید آن را از وبگاه راست سرچ و خریداری کنید.
+                                    </p><br />
+                                    <div dir="ltr">
+                                        <ul>
+                                            <li><b><a href="https://www.rtl-theme.com/qurno-html-template/">QURNO BLOG Template</a></b></li>
+                                            <li><b><a href="https://www.rtl-theme.com/%d9%82%d8%a7%d9%84%d8%a8-html-%d9%85%d8%af%db%8c%d8%b1%db%8c%d8%aa-%d9%85%d8%af%db%8c%d8%b1%d8%a7%d9%86/">Modiran Panel Template</a></b></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div><!-- /.portlet-body -->
+                        </div><!-- /.portlet -->
+                    </div><!-- /.col-12 -->
+                </div><!-- /.row -->
+            </div><!-- /#page-content -->
+<!-- END PAGE CONTENT -->
+{% endblock %}
