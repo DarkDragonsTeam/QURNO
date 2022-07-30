@@ -136,20 +136,23 @@ def admin_profile_view(request):
 
     # First, we need to have access to the intended user. The best solution for this idea is to obtain user information
     # through the "request" variable.
-    user = request.user
+    user = get_user_model().objects.get(username=request.user.username)
 
     # Now we refer to the "user" variable that we created earlier and try to fill the user information from the "user"
     # instance. But the user may have entered certain information, so first we fill in the values and if Python (by or)
     # realizes that there is no value in the form, it will return None. "user" and fill the form based on the user's
     # previous information.
-    form = UserForm(data=request.POST or None, files=request.FILES or None, instance=user)
+    form = UserForm(instance=user)
 
     if request.method == "POST":
+        form = UserForm(data=request.POST or None, files=request.FILES or None, instance=user)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(request.path_info)
+    else:
+        form = UserForm()
 
-    return render(request, "admins/portals/user_profile.html", {"form": form})
+    return render(request, "admins/portals/admin_profile.html", {"form": form, "user": user, "today": today})
 
 
 @login_required()
@@ -496,23 +499,3 @@ def category_delete_view(request, pk):
         return redirect("admins:category_list")
 
     return render(request, "admins/blog/category_delete.html", {"category": category, "today": today})
-
-
-@login_required()
-def admin_profile_view(request):
-    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
-        return HttpResponseForbidden(render(request, "admins/errors/403.html"))
-    
-    user = get_user_model().objects.get(username=request.user.username)
-    
-    form = UserForm(instance=user)
-    
-    if request.method == "POST":
-        form = UserForm(data=request.POST or None, files=request.FILES or None, instance=user)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(request.path_info)
-    else:
-        form = UserForm()
-        
-    return render(request, "admins/portals/admin_profile.html", {"form": form, "user": user, "today": today})
