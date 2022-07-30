@@ -257,7 +257,7 @@ def post_detail_view(request, pk):
     except ObjectDoesNotExist:
         return HttpResponseNotFound(render(request, "admins/errors/404.html"))
 
-    return render(request, "admins/blog/post_detail.html", {"post": post, "time_now": timezone.now()})
+    return render(request, "admins/blog/post_detail.html", {"post": post})
 
 
 @login_required()
@@ -340,7 +340,7 @@ def post_update_view(request, pk):
     try:
         post = Post.objects.get(id=pk)
 
-        if request.user != post.author & request.user.is_superuser == 1:
+        if request.user != post.author and not request.user.is_superuser:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
     except ObjectDoesNotExist:
         return HttpResponseNotFound(render(request, "admins/errors/404.html"))
@@ -373,7 +373,7 @@ def post_delete_view(request, pk):
     try:
         post = Post.objects.get(id=pk)
 
-        if request.user != post.author & request.user.is_superuser == 1:
+        if request.user != post.author and not request.user.is_superuser:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
     except ObjectDoesNotExist:
         return HttpResponseNotFound(render(request, "admins/errors/404.html"))
@@ -466,7 +466,7 @@ def category_update_view(request, pk):
     try:
         category = Category.objects.get(id=pk)
 
-        if category.designer != request.user & request.user.is_superuser == False:
+        if category.designer != request.user and request.user.is_superuser:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
     except ObjectDoesNotExist:
         return HttpResponseNotFound(render(request, "admins/errors/404.html"))
@@ -489,7 +489,7 @@ def category_delete_view(request, pk):
     try:
         category = Category.objects.get(id=pk)
 
-        if category.designer != request.user & request.user.is_superuser == False:
+        if category.designer != request.user and not request.user.is_superuser:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
     except ObjectDoesNotExist:
         return HttpResponseNotFound(render(request, "admins/errors/404.html"))
