@@ -42,6 +42,90 @@ today = get_jalali_today()
 
 
 @login_required()
+def admin_portal_view(request):
+    """
+    This is the admin portal, the scene the admin will see on first encounter. The portal should be designed in a neat,
+    beautiful and short way, so that it is also efficient and able to provide the best service to the manager.
+
+    Here we show the administrator a short list of personal posts and allow him to quickly edit, delete or publish his
+    personal posts.
+
+    We enter very heavy and large queries here, of course, the speed efficiency will decrease, on the other hand, QURNO
+    templates do not have global standards and are created only for development, so be careful to use templates with
+    global standards for the management portal. And use light, because very heavy queries are entered in it.
+    """
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
+        # Here we check whether the user has the is_author status turned on or not. Of course, if the user has the
+        # status of is_staff turned on, we can accept to enter the management, we will have this part in all View
+        # functions, so remember it.
+        return HttpResponseForbidden(render(request, "admins/errors/403.html"))
+
+    # Here it is also known what queries have been made (variable names can have direct references to the function of
+    # the variable.)
+    total_posts = Post.objects.count()
+    total_actives_posts = Post.actives.count()
+    total_comments = Comment.objects.count()
+    total_users = get_user_model().objects.count()
+    recent_posts = Post.objects.filter(author=request.user).order_by("-datetime_created")[:10]
+
+    # This is also a simple pagination system, and no additional explanation is needed, this pagination is already built
+    # and explained in the Django documentation.
+    paginator = Paginator(recent_posts, 3)
+    page_num = request.GET.get("page")
+    try:
+        recent_posts = paginator.get_page(page_num)
+    except PageNotAnInteger:
+        recent_posts = paginator.get_page(1)
+    except EmptyPage:
+        recent_posts = paginator.get_page(paginator.num_pages)
+
+    # In this section, we use Django's internal forms and create a quick post creation form, which can help the
+    # administrator a lot.
+    post_create_form = MiniPostCreateForm()
+    if request.POST:
+        # We emphasize: these types of forms are wrong. You have to create different functions and handle your form
+        # through that. (FORM ACTIONS), but this method is much faster and more accessible (ATTENTION: in the
+        # development stages of QURNO, it was decided to use this type of design of forms, because they are easier and
+        # more understandable and faster to design, the concept of this The forms are self-explanatory and there is no
+        # need to explain them.)
+        query = request.POST["query"]
+        requested = request.POST["requested"]
+        value = request.POST["value"]
+        if query == "post":
+            post = Post.objects.get(id=int(value))
+            if requested == "publish_post":
+                post.active = True
+                post.status = "1"
+                post.pub_datetime = timezone.now()
+                post.save()
+                return redirect("blog:post_detail", post.slug)
+            elif requested == "deactivation":
+                post.active = False
+                post.save()
+                return HttpResponseRedirect(request.path_info)
+        elif requested == "post_create":
+            post_create_form = MiniPostCreateForm(request.POST)
+            if post_create_form.is_valid():
+                commit = post_create_form.save(commit=False)
+                commit.author = request.user
+                commit.save()
+                # ->
+                post_create_form.save_m2m()
+                return redirect("admins:post_detail", Post.objects.first().id)
+
+    context = {
+        "total_posts": total_posts,
+        "total_actives_posts": total_actives_posts,
+        "total_comments": total_comments,
+        "total_users": total_users,
+        "recent_posts": recent_posts,
+        "post_create_form": post_create_form,
+        "today": today,
+    }
+    return render(request, "admins/portals/admin_portal.html", context)
+
+
+@login_required()
 def admin_profile_view(request):
     """
     It is a joint Detail View and UpdateView. In fact, on this page, we provide both a Detail View and a Update View to
