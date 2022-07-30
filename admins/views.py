@@ -54,7 +54,7 @@ def admin_portal_view(request):
     templates do not have global standards and are created only for development, so be careful to use templates with
     global standards for the management portal. And use light, because very heavy queries are entered in it.
     """
-    if not request.user.is_author and not request.user.is_staff:
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
         # Here we check whether the user has the is_author status turned on or not. Of course, if the user has the
         # status of is_staff turned on, we can accept to enter the management, we will have this part in all View
         # functions, so remember it.
@@ -131,7 +131,7 @@ def admin_profile_view(request):
     It is a joint Detail View and UpdateView. In fact, on this page, we provide both a Detail View and a Update View to
     the intended user. The user can edit or manipulate his personal information on the site :)
     """
-    if not request.user.is_author and not request.user.is_staff:
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
         return HttpResponseForbidden(render(request, "admins/errors/403.html"))
 
     # First, we need to have access to the intended user. The best solution for this idea is to obtain user information
@@ -157,7 +157,7 @@ def admin_terms_view(request):
     """
     This view is only for displaying a template in which the rules of the website are displayed.
     """
-    if not request.user.is_author and not request.user.is_staff:
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
         return HttpResponseForbidden(render(request, "admins/errors/403.html"))
 
     return render(request, "admins/portals/admin_terms.html", {"today": today})
@@ -165,7 +165,7 @@ def admin_terms_view(request):
 
 @login_required()
 def post_list_view_lazy(request):
-    if not request.user.is_author and not request.user.is_staff:
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
 
     return HttpResponseRedirect("/admins/blog/post/list/page/")
@@ -173,7 +173,7 @@ def post_list_view_lazy(request):
 
 @login_required()
 def post_list_view(request, author_username=None):
-    if not request.user.is_author and not request.user.is_staff:
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
 
     # Here we also check that if the user entered the author_username value through the URLs, it will return the posts
@@ -219,7 +219,7 @@ def searched_post_list_view(request):
     To use this section, you must have the knowledge of using PostgreSQL and Django PostgreSQL Contrib, which you can
     obtain in your Django documentation.
     """
-    if not request.user.is_author and not request.user.is_staff:
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
         return HttpResponseForbidden(render(request, "admins/errors/403.html"))
     
     form = PostSearchForm()
@@ -246,7 +246,7 @@ def post_detail_view(request, pk):
     These examples of DetailViews are not dependent on SlugFields and instead work with the Primary Key of the table in
     question.
     """
-    if not request.user.is_author and not request.user.is_staff:
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
 
     try:
@@ -269,7 +269,7 @@ def post_create_view(request):
     To use Create Views we must have a form, which is designed and implemented from a specific model. This form is a
     copy of the same database objects, except that it is empty and (ready to) be filled.
     """
-    if not request.user.is_author and not request.user.is_staff:
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
 
     form = None
@@ -328,7 +328,7 @@ def post_update_view(request, pk):
     user's previous post so that if he enters a blank value (he didn't actually change it) Do not manipulate and save
     previous information.
     """
-    if not request.user.is_author and not request.user.is_staff:
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
 
     post = None
@@ -337,7 +337,7 @@ def post_update_view(request, pk):
     try:
         post = Post.objects.get(id=pk)
 
-        if post.author != request.user:
+        if request.user != post.author & request.user.is_superuser == 1:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
     except ObjectDoesNotExist:
         return HttpResponseNotFound(render(request, "admins/errors/404.html"))
@@ -345,7 +345,7 @@ def post_update_view(request, pk):
     form = PostForm(request.POST or None, request.FILES or None, instance=post)
     if form.is_valid():
         commit = form.save(commit=False)
-        commit.author = request.user
+        commit.author = post.author
         commit.save()
         form.save_m2m()
         return redirect("admins:post_detail", Post.objects.first().id)
@@ -361,7 +361,7 @@ def post_delete_view(request, pk):
     and, if necessary, call the delete() method, and thus the post is deleted, and then We will be directed to the list
     of posts.
     """
-    if not request.user.is_author and not request.user.is_staff:
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
 
     post = None
@@ -370,7 +370,7 @@ def post_delete_view(request, pk):
     try:
         post = Post.objects.get(id=pk)
 
-        if request.user != post.author:
+        if request.user != post.author & request.user.is_superuser == 1:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
     except ObjectDoesNotExist:
         return HttpResponseNotFound(render(request, "admins/errors/404.html"))
@@ -384,7 +384,7 @@ def post_delete_view(request, pk):
 
 @login_required()
 def category_list_view_lazy(request):
-    if not request.user.is_author and not request.user.is_staff:
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
 
     return HttpResponseRedirect("/admins/post/category/page/")
@@ -392,7 +392,7 @@ def category_list_view_lazy(request):
 
 @login_required()
 def category_list_view(request, category_designer_username=None):
-    if not request.user.is_author and not request.user.is_staff:
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
 
     category_designer = None
@@ -417,7 +417,7 @@ def category_list_view(request, category_designer_username=None):
 
 @login_required()
 def category_detail_view(request, pk):
-    if not request.user.is_author and not request.user.is_staff:
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
 
     try:
@@ -434,7 +434,7 @@ def category_detail_view(request, pk):
 
 @login_required()
 def category_create_view(request):
-    if not request.user.is_author and not request.user.is_staff:
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
 
     form = None
@@ -454,7 +454,7 @@ def category_create_view(request):
 
 @login_required
 def category_update_view(request, pk):
-    if not request.user.is_author and not request.user.is_staff:
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
 
     category = None
@@ -462,14 +462,17 @@ def category_update_view(request, pk):
 
     try:
         category = Category.objects.get(id=pk)
-        if category.designer != request.user:
+
+        if category.designer != request.user & request.user.is_superuser == False:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
     except ObjectDoesNotExist:
         return HttpResponseNotFound(render(request, "admins/errors/404.html"))
 
     form = CategoryForm(request.POST or None, instance=category)
     if form.is_valid():
-        form.save()
+        commit = form.save(commit=False)
+        commit.author = category.author
+        commit.save()
         return redirect("admins:category_detail", category.id)
 
     return render(request, "admins/blog/category_update.html", {"category": category, "form": form, "today": today})
@@ -477,13 +480,13 @@ def category_update_view(request, pk):
 
 @login_required()
 def category_delete_view(request, pk):
-    if not request.user.is_author and not request.user.is_staff:
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
 
     try:
         category = Category.objects.get(id=pk)
 
-        if category.designer != request.user:
+        if category.designer != request.user & request.user.is_superuser == False:
             return HttpResponseForbidden(render(request, "admins/errors/403.html"))
     except ObjectDoesNotExist:
         return HttpResponseNotFound(render(request, "admins/errors/404.html"))
@@ -497,7 +500,7 @@ def category_delete_view(request, pk):
 
 @login_required()
 def admin_profile_view(request):
-    if not request.user.is_author and not request.user.is_admin:
+    if not request.user.is_author and not request.user.is_staff and not request.user.is_superuser:
         return HttpResponseForbidden(render(request, "admins/errors/403.html"))
     
     user = get_user_model().objects.get(username=request.user.username)
